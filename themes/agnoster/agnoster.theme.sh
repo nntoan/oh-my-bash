@@ -65,7 +65,7 @@
 
 # note: requires bash v4+... Mac users - you often have bash3.
 # 'brew install bash' will set you free
-PROMPT_DIRTRIM=2 # bash4 and above
+PROMPT_DIRTRIM=${PROMPT_DIRTRIM:-2} # bash4 and above
 
 ######################################################################
 DEBUG=0
