@@ -32,7 +32,6 @@ SCM_GIT_SHOW_CURRENT_USER=${SCM_GIT_SHOW_CURRENT_USER:=false}
 SCM_GIT_SHOW_MINIMAL_INFO=${SCM_GIT_SHOW_MINIMAL_INFO:=false}
 
 SCM_GIT='git'
-
 SCM_GIT_CHAR='±'
 SCM_GIT_DETACHED_CHAR='⌿'
 SCM_GIT_AHEAD_CHAR="↑"
@@ -81,7 +80,11 @@ function run_with_timeout() {
       TIMEOUT=gtimeout
     fi
 
-    $TIMEOUT ${TIME} ${CMD}
+    if [ -z "$TIMEOUT" ]; then
+      ${CMD}
+    else
+      $TIMEOUT ${TIME} ${CMD}
+    fi
 }
 
 function scm {
