@@ -32,6 +32,7 @@ SCM_GIT_SHOW_CURRENT_USER=${SCM_GIT_SHOW_CURRENT_USER:=false}
 SCM_GIT_SHOW_MINIMAL_INFO=${SCM_GIT_SHOW_MINIMAL_INFO:=false}
 
 SCM_GIT='git'
+
 SCM_GIT_CHAR='±'
 SCM_GIT_DETACHED_CHAR='⌿'
 SCM_GIT_AHEAD_CHAR="↑"
@@ -39,6 +40,7 @@ SCM_GIT_BEHIND_CHAR="↓"
 SCM_GIT_UNTRACKED_CHAR="?:"
 SCM_GIT_UNSTAGED_CHAR="U:"
 SCM_GIT_STAGED_CHAR="S:"
+SCM_GIT_TIMEOUT="0.2"
 
 SCM_HG='hg'
 SCM_HG_CHAR='☿'
@@ -64,6 +66,23 @@ RBENV_THEME_PROMPT_SUFFIX='|'
 
 RBFU_THEME_PROMPT_PREFIX=' |'
 RBFU_THEME_PROMPT_SUFFIX='|'
+
+function run_with_timeout() {
+    # Runs the given command with the given timeout
+    # $1 Timeout in seconds
+    # $@ Command to be executed.
+    local TIME=$1
+    shift
+    local CMD=$@
+    local TIMEOUT=
+    if which timeout &> /dev/null; then
+      TIMEOUT=timeout
+    elif which gtimeout &> /dev/null; then
+      TIMEOUT=gtimeout
+    fi
+
+    $TIMEOUT ${TIME} ${CMD}
+}
 
 function scm {
   if [[ "$SCM_CHECK" = false ]]; then SCM=$SCM_NONE
@@ -150,7 +169,7 @@ function git_prompt_minimal_info {
 
     # Get the status
     [[ "${SCM_GIT_IGNORE_UNTRACKED}" = "true" ]] && git_status_flags+='-untracked-files=no'
-    status=$(command git status ${git_status_flags} 2> /dev/null | tail -n1)
+    status=$(run_with_timeout $SCM_GIT_TIMEOUT git status ${git_status_flags} 2> /dev/null | tail -n1)
 
     if [[ -n ${status} ]]; then
       SCM_DIRTY=1
@@ -200,8 +219,8 @@ function git_prompt_vars {
   SCM_STATE=${GIT_THEME_PROMPT_CLEAN:-$SCM_THEME_PROMPT_CLEAN}
   if [[ "$(git config --get bash-it.hide-status)" != "1" ]]; then
     [[ "${SCM_GIT_IGNORE_UNTRACKED}" = "true" ]] && local git_status_flags='-uno'
-    local status_lines=$((git status --porcelain ${git_status_flags} -b 2> /dev/null ||
-                          git status --porcelain ${git_status_flags}    2> /dev/null) | git_status_summary)
+    local status_lines=$((run_with_timeout $SCM_GIT_TIMEOUT git status --porcelain ${git_status_flags} -b 2> /dev/null ||
+                          run_with_timeout $SCM_GIT_TIMEOUT git status --porcelain ${git_status_flags}    2> /dev/null) | git_status_summary)
     local status=$(awk 'NR==1' <<< "$status_lines")
     local counts=$(awk 'NR==2' <<< "$status_lines")
     IFS=$'\t' read untracked_count unstaged_count staged_count <<< "$counts"
