@@ -27,7 +27,15 @@ shopt -s nocaseglob;
 ## SMARTER TAB-COMPLETION (Readline bindings) ##
 
 # Perform file completion in a case insensitive fashion
-bind "set completion-ignore-case on"
+if [ ! -z "$CASE_SENSITIVE" ]; then
+	if [[ $CASE_SENSITIVE == "true" ]];then
+		bind "set completion-ignore-case off"
+	else
+		bind "set completion-ignore-case on"
+	fi
+else
+	bind "set completion-ignore-case on"
+fi
 
 # Treat hyphens and underscores as equivalent
 bind "set completion-map-case on"
