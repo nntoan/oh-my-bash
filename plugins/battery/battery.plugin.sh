@@ -134,7 +134,7 @@ battery_percentage(){
       ;;
     esac
   else
-    echo "no"
+    echo "$(cat /sys/class/power_supply/BAT0/capacity)"
   fi
 }
 
