@@ -11,7 +11,7 @@ function _update_osh_update() {
 }
 
 function _upgrade_osh() {
-  env BASH=$OSH sh $OSH/tools/upgrade.sh
+  env BASH="$OSH" sh "$OSH/tools/upgrade.sh"
   # update the osh file
   _update_osh_update
 }
@@ -56,5 +56,5 @@ if mkdir "$OSH/log/update.lock" 2>/dev/null; then
     _update_osh_update
   fi
 
-  rmdir $OSH/log/update.lock
+  rmdir "$OSH/log/update.lock"
 fi

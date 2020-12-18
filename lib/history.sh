@@ -3,7 +3,7 @@ shopt -s histappend # append to bash_history if Terminal.app quits
 
 ## Command history configuration
 if [ -z "$HISTFILE" ]; then
-  HISTFILE=$HOME/.bash_history
+  HISTFILE="$HOME/.bash_history"
 fi
 
 
@@ -39,7 +39,7 @@ HISTCONTROL="erasedups:ignoreboth"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d                                                                                      
+# %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
 HISTTIMEFORMAT='%F %T '
 
