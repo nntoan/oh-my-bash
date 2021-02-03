@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # ubuntu-20.04 available: https://github.com/actions/virtual-environments/issues/1816
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          submodules: false
+      - name: Upgrade bash on Mac
+        if: runner.os == 'macOs'
+        run: brew install bash
+      - name: Install oh-my-bash
+        shell: bash
+        run: |
+          tmpdir=$(mktemp -d)
+
+          export OSH="$tmpdir/path with space"
+          export HOME="$tmpdir/home with space"
+          mkdir -p "$HOME"
+
+          OSH_REPOSITORY="$PWD" ./tools/install.sh
+
+          source "$HOME/.bashrc"
+
+          set | grep -aE "^OSH"
+
+          [[ "$OSH_THEME" == "font" ]] && echo "Installation succeeded" || {
+            echo "Installation failed, \$OSH_THEME is not set to 'font'" && exit 1
+          }
