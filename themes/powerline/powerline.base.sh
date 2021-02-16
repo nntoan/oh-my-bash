@@ -2,6 +2,7 @@
 
 # Define this here so it can be used by all of the Powerline themes
 THEME_CHECK_SUDO=${THEME_CHECK_SUDO:=true}
+POWERLINE_PROMPT_NEWLINE=${POWERLINE_PROMPT_NEWLINE:=false}
 
 function set_color {
   if [[ "${1}" != "-" ]]; then
@@ -160,8 +161,9 @@ function __powerline_prompt_command {
   done
   [[ "${last_status}" -ne 0 ]] && __powerline_left_segment $(__powerline_last_status_prompt ${last_status})
   [[ -n "${LEFT_PROMPT}" ]] && LEFT_PROMPT+="$(set_color ${LAST_SEGMENT_COLOR} -)${separator_char}${normal}"
+  [[ "${POWERLINE_PROMPT_NEWLINE=}" == true ]] && END_PROMPT=" \n" || END_PROMPT=""
 
-  PS1="${LEFT_PROMPT} "
+  PS1="${LEFT_PROMPT}${END_PROMPT}"
 
   ## cleanup ##
   unset LAST_SEGMENT_COLOR \
