@@ -36,6 +36,11 @@ for config_file in $OSH/lib/*.sh; do
   source $config_file
 done
 
+# Load colors first so they can be use in base theme
+source "${OSH}/themes/colours.theme.sh"
+
+# The base theme defines a set of functions that our plugins can use.
+source "${OSH}/themes/base.theme.sh"
 
 is_plugin() {
   local base_dir=$1
@@ -126,9 +131,6 @@ for config_file in $OSH_CUSTOM/*.sh; do
 done
 unset config_file
 
-# Load colors first so they can be use in base theme
-source "${OSH}/themes/colours.theme.sh"
-source "${OSH}/themes/base.theme.sh"
 
 # Load the theme
 if [ "$OSH_THEME" = "random" ]; then
