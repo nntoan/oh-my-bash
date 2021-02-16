@@ -29,3 +29,10 @@ alias fix_stty='stty sane'                  # fix_stty:     Restore terminal set
 alias fix_term='echo -e "\033c"'            # fix_term:     Reset the conosle.  Similar to the reset command
 alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
 alias src='source ~/.bashrc'                # src:          Reload .bashrc file
+
+# Outputs List of Loadable Modules (llm) for current kernel
+alias llm="find /lib/modules/$(uname -r) -type f -name '*.ko*'"
+# Used for piping to remote pastebin from cmdline to generate a url
+[ -x "$(command -v curl)" ] && ix() { curl -n -F 'f:1=<-' http://ix.io ; }
+# Used for piping to clipboard
+[ -x "$(command -v xclip)" ] && alias xcopy="xclip -se c"
