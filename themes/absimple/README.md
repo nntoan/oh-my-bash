@@ -1,5 +1,7 @@
 # ab+simple theme
 
+this theme needs a Powerline-patched font to render correctly. i recommend: https://github.com/adi1090x/termux-style
+
 a colorful theme based on agnoster theme, made shorter and simpler.
 
 added title support for termux and random dates for fun.
