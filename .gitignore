@@ -11,6 +11,7 @@
 /log/
 !/cache/.gitkeep
 !/log/.gitkeep
+*.un~
 
 # disabled files
 *.swp
