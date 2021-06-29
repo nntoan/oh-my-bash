@@ -4,6 +4,7 @@
 
 Shorted aliases for most used Debian specific commands.
 To activate it, add `debian` to `plugins(...)` in your `.bashrc` file:
+
 `plugins=(... debian)`
 
 ### Basic Commands
